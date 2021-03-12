@@ -1,0 +1,4 @@
+all:  compiler.l
+	flex compiler.l
+	gcc lex.yy.c -o compiler
+	./compiler < input.c

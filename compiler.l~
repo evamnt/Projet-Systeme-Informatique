@@ -1,0 +1,19 @@
+%%
+{ printf("%s trouvé", yytext);
+} printf("%s trouvé", yytext);
+((const)? int [a-zA-Z][a-zA-Z0-9_]+) printf("déclaration %s trouvée", yytext);
+(["+"-"*"/=()]) printf("opérateur %s trouvé", yytext);
+[ /t,] printf("séparateur %s trouvé", yytext);
+/n printf("fin de ligne trouvée");
+\; printf("fin d'instruction trouvée");
+
+%%
+int yywrap()
+{
+return l;
+}
+int main()
+{
+yylex();
+return l;
+}

@@ -1,0 +1,7 @@
+%token tIf tPO tPF tAO tAF tInt tConst tVirgule tOp tNomVar tFI tPrint tValInt
+
+%%
+
+File:
+;
+
