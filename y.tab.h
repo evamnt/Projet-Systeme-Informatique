@@ -45,39 +45,63 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    tIf = 258,
-    tPO = 259,
-    tPF = 260,
-    tAO = 261,
-    tAF = 262,
-    tInt = 263,
-    tConst = 264,
-    tVirgule = 265,
-    tOp = 266,
-    tNomVar = 267,
-    tFI = 268,
-    tPrint = 269,
-    tValInt = 270
+    tMain = 258,
+    tIf = 259,
+    tPO = 260,
+    tPF = 261,
+    tAO = 262,
+    tAF = 263,
+    tInt = 264,
+    tConst = 265,
+    tVirgule = 266,
+    tOpPlus = 267,
+    tOpMoins = 268,
+    tOpMul = 269,
+    tOpDiv = 270,
+    tFI = 271,
+    tPrint = 272,
+    tEgal = 273,
+    tNomVar = 274,
+    tValInt = 275,
+    tOpEgal = 276
   };
 #endif
 /* Tokens.  */
-#define tIf 258
-#define tPO 259
-#define tPF 260
-#define tAO 261
-#define tAF 262
-#define tInt 263
-#define tConst 264
-#define tVirgule 265
-#define tOp 266
-#define tNomVar 267
-#define tFI 268
-#define tPrint 269
-#define tValInt 270
+#define tMain 258
+#define tIf 259
+#define tPO 260
+#define tPF 261
+#define tAO 262
+#define tAF 263
+#define tInt 264
+#define tConst 265
+#define tVirgule 266
+#define tOpPlus 267
+#define tOpMoins 268
+#define tOpMul 269
+#define tOpDiv 270
+#define tFI 271
+#define tPrint 272
+#define tEgal 273
+#define tNomVar 274
+#define tValInt 275
+#define tOpEgal 276
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 13 "compiler.y" /* yacc.c:1909  */
+
+            char* var;
+            int nb;
+        
+
+#line 102 "y.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

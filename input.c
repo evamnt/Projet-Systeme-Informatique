@@ -1,7 +1,6 @@
-const int e1;
-int yeah_cool2;
-printf(yeah_cool2);
-
-int coucou(int x){
-  return x+1;
+main() {
+    const int a = 2;
+    int b;
+    b = a + 2 + 4;
+    printf(b);
 }
