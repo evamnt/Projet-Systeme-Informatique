@@ -1,6 +1,7 @@
 %{
-#include "y.tab.h"
+    #include "y.tab.h"
 %}
+
 %%
 \{ {printf("%s trouvé \n", yytext); return tAO;}
 \} {printf("%s trouvé\n", yytext); return tAF;}
@@ -10,7 +11,8 @@ const {printf("déclaration de constante trouvée\n"); return tConst;}
 int {printf("type int trouvé\n"); return tInt;}
 [a-zA-Z][a-zA-Z0-9_]*   {
                             printf("nom de variable %s trouvé\n", yytext); 
-                            yylval.var = yytext;
+                            yylval.var = strdup(yytext);
+                            printf("yylval vaut : %s\n", yylval.var);
                             return tNomVar;
                         }
 "+" {printf("opérateur + trouvé\n", yytext); return tOpPlus;}

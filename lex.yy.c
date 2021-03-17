@@ -466,7 +466,7 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "compiler.l"
 #line 2 "compiler.l"
-#include "y.tab.h"
+    #include "y.tab.h"
 #line 471 "lex.yy.c"
 #line 472 "lex.yy.c"
 
@@ -685,7 +685,7 @@ YY_DECL
 		}
 
 	{
-#line 4 "compiler.l"
+#line 5 "compiler.l"
 
 #line 691 "lex.yy.c"
 
@@ -746,87 +746,88 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 5 "compiler.l"
+#line 6 "compiler.l"
 {printf("%s trouvé \n", yytext); return tAO;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 6 "compiler.l"
+#line 7 "compiler.l"
 {printf("%s trouvé\n", yytext); return tAF;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 7 "compiler.l"
+#line 8 "compiler.l"
 {printf("fonction main trouvée\n"); return tMain;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 8 "compiler.l"
+#line 9 "compiler.l"
 {printf("fonction printf trouvé\n"); return tPrint;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 9 "compiler.l"
+#line 10 "compiler.l"
 {printf("déclaration de constante trouvée\n"); return tConst;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 10 "compiler.l"
+#line 11 "compiler.l"
 {printf("type int trouvé\n"); return tInt;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 11 "compiler.l"
+#line 12 "compiler.l"
 {
                             printf("nom de variable %s trouvé\n", yytext); 
-                            yylval.var = yytext;
+                            yylval.var = strdup(yytext);
+                            printf("yylval vaut : %s\n", yylval.var);
                             return tNomVar;
                         }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 16 "compiler.l"
+#line 18 "compiler.l"
 {printf("opérateur + trouvé\n", yytext); return tOpPlus;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 17 "compiler.l"
+#line 19 "compiler.l"
 {printf("opérateur - trouvé\n", yytext); return tOpMoins;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 18 "compiler.l"
+#line 20 "compiler.l"
 {printf("opérateur * trouvé\n", yytext); return tOpMul;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 19 "compiler.l"
+#line 21 "compiler.l"
 {printf("opérateur / trouvé\n", yytext); return tOpDiv;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 20 "compiler.l"
+#line 22 "compiler.l"
 {printf("opérateur = trouvé\n"); return tEgal;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 21 "compiler.l"
+#line 23 "compiler.l"
 printf("séparateur %s trouvé\n", yytext); 
 	YY_BREAK
 case 14:
 /* rule 14 can match eol */
 YY_RULE_SETUP
-#line 22 "compiler.l"
+#line 24 "compiler.l"
 printf("fin de ligne trouvée\n");
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 23 "compiler.l"
+#line 25 "compiler.l"
 {printf("fin d'instruction trouvée\n"); return tFI;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 24 "compiler.l"
+#line 26 "compiler.l"
 {
             printf("entier %s trouvé\n", yytext); 
             yylval.nb = atoi(yytext);
@@ -835,25 +836,25 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 29 "compiler.l"
+#line 31 "compiler.l"
 printf("entier sous forme exponentielle %s trouvé\n", yytext);
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 30 "compiler.l"
+#line 32 "compiler.l"
 {printf("parenthèse ouvrante trouvée\n"); return tPO;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 31 "compiler.l"
+#line 33 "compiler.l"
 {printf("parenthèse fermante trouvée\n"); return tPF;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 34 "compiler.l"
+#line 36 "compiler.l"
 ECHO;
 	YY_BREAK
-#line 857 "lex.yy.c"
+#line 858 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1858,7 +1859,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 34 "compiler.l"
+#line 36 "compiler.l"
 
 int yywrap(void)
 {

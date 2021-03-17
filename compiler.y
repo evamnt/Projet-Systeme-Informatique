@@ -1,13 +1,12 @@
 %{
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
-  int yylex();
-  void yyerror(char *);
-  FILE * f;
-  char ** table_symboles;
-  int add_variable(char *);
-  int get_address(char *);
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include "symboles.h"
+    int yylex();
+    void yyerror(char *);
+    FILE * f;
+  
 %}
 
 %union  {
@@ -18,6 +17,9 @@
 %token  tMain tIf tPO tPF tAO tAF tInt tConst tVirgule tOpPlus tOpMoins tOpMul tOpDiv tFI tPrint tEgal
 %token  <var> tNomVar
 %token  <nb> tValInt
+
+%type <char *> Operateur
+%type <char**> Operation
 
 %right  tOpEgal
 %left   tOpPlus tOpMoins
@@ -39,25 +41,39 @@ Declarations    : Declaration Declarations
 Declaration : tConst tInt tNomVar tEgal tValInt tFI
             {
                 printf("Declaration de constante reconnue\n");
-                if (!add_variable($3)) {
-                    fprintf(f,"AFC %d %d\n", get_address($3), $5);
-                }                    
-                
+                printf("On essaie d'ajouter la constante : %s\n", $3);
+                if (add_variable($3)) {
+                    if (get_address($3) != -1)                   
+                        fprintf(f,"AFC %d %d\n", get_address($3), $5);
+                    else
+                        printf("Erreur lors de la récupération de l'adresse de %s\n", $3);
+                }                  
+                else {
+                    printf("Erreur lors de l'ajout de %s\n", $3);
+                }
             }
             | tInt tNomVar tFI
             {
                 printf("Declaration de variable reconnue\n");
-                if (!add_variable($2)) {
+                printf("On essaie d'ajouter la variable : %s\n", $2);
+                if (add_variable($2)) {
                     fprintf(f,"AFC %d \n", get_address($2));
-                }    
+                }
+                else {
+                    printf("Erreur lors de l'ajout de %s\n", $2);
+                }
             }
             
             | tInt tNomVar tEgal tValInt tFI
             {   
                 printf("Declaration de variable reconnue\n");
-                if (!add_variable($2)) {
+                printf("On essaie d'ajouter la variable : %s\n", $2);
+                if (add_variable($2)) {
                     fprintf(f,"AFC %d %d\n", get_address($2), $4);
-                }    
+                }
+                else {
+                    printf("Erreur lors de l'ajout de %s\n", $2);
+                }
             }
             ;
 
@@ -65,9 +81,26 @@ Instructions    : Instruction Instructions
                 | Instruction
                 | ;
 
-Instruction : tNomVar tEgal Operations tFI
+Instruction : tNomVar tEgal Operation tFI
             {
                 printf("Instruction d'operation reconnue\n");
+                if($3[0] == '+')
+                {
+                    if ((get_address($3[1]) != -1) && (get_address($3[2]) != -1))                  
+                        fprintf(f,"ADD %d %d %d\n", get_address($1), get_address($3[1]), get_address($3[2]));
+                    else if ((get_address($3[1]) != -1) && (get_address($3[2]) == -1))
+                        fprintf(f,"ADD %d %d %s\n", get_address($1), get_address($3[1]), $3[2]);
+                    else if ((get_address($3[1]) == -1) && (get_address($3[2]) == -1))
+                        fprintf(f,"ADD %d %s %s\n", get_address($1), $3[1], $3[2]);
+                    else if ((get_address($3[1]) == -1) && (get_address($3[2]) != -1))
+                        fprintf(f,"ADD %d %s %d\n", get_address($1), $3[1], get_address($3[2]));
+                }
+                else if(strcmp($3[0], '-') == 0)
+                    fprintf(f,"SOU %d %d %d\n", get_address($1), $3[1], $3[2]);
+                else if(strcmp($3[0], '/') == 0)
+                    fprintf(f,"DIV %d %d %d\n", get_address($1), $3[1], $3[2]);
+                else if(strcmp($3[0], '*') == 0)
+                    fprintf(f,"MUL %d %d %d\n", get_address($1), $3[1], $3[2]);
             }
             | tPrint tPO tNomVar tPF tFI
             {printf("Instruction de print reconnue\n");}
@@ -77,48 +110,56 @@ Operations  : Operation Operateur Operations
             | Operation;
 
 Operation   : tNomVar Operateur tNomVar
+            {
+                $$ = [$2,$1,$3];
+            }
+                
             | tNomVar Operateur tValInt
+            {
+                $$ = [$2,$1,$3];
+            }
             | tValInt Operateur tValInt 
+            {
+                $$ = [$2,$1,$3];
+            }
             | tValInt Operateur tNomVar
+            {$$ = [$2,$1,$3];}
             | tNomVar 
-            | tValInt;
+            {$$ = [$1];}
+            | tValInt
+            {$$ = [$1];}
+            ;
 
 Operateur   : tOpPlus
-            {printf("Addition reconnue\n");} 
+            {
+                printf("Addition reconnue\n");
+                $$ = "+"
+            } 
             | tOpMoins 
-            {printf("Soustraction reconnue\n");} 
+            {
+                printf("Soustraction reconnue\n");
+                $$ = "-"
+            } 
             | tOpDiv 
-            {printf("Division reconnue\n");} 
+            {
+                printf("Division reconnue\n");
+                $$ = "/"
+            } 
             | tOpMul
-            {printf("Multiplication reconnue\n");}
+            {
+                printf("Multiplication reconnue\n");
+                $$ = "*"
+            }
             ;
 
 %%
 void yyerror(char * str) {
-  fprintf(stderr, "Error line %s \n", str);
+    fprintf(stderr, "Error line %s \n", str);
 }
-int add_variable(char * symbole) {
-  int table_size = sizeof(table_symboles) / sizeof(char*);
-  for (int i = 0; i < table_size; i++) {
-    if (table_symboles[i] == NULL) {
-      table_symboles[i] = symbole;
-      return 0;
-    }
-  }
-  return 1;
-}
-int get_address(char * symbole) {
-  int table_size = sizeof(table_symboles) / sizeof(char*);
-  for (int i = 0; i < table_size; i++) {
-    if (strcmp(table_symboles[i], symbole) == 0) {
-      return i;
-    }
-  }
-  return -1;
-}
+
 int main(){
-  table_symboles = (char **) malloc(sizeof(char*)*1000);
-  f = fopen("output.asm", "w");
-  yyparse();
-  return 0;
+    initialize_table();
+    f = fopen("output.asm", "a");
+    yyparse();
+    return 0;
 }
