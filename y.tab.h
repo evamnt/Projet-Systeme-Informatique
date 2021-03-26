@@ -61,9 +61,12 @@ extern int yydebug;
     tFI = 271,
     tPrint = 272,
     tEgal = 273,
-    tNomVar = 274,
-    tValInt = 275,
-    tOpEgal = 276
+    tSup = 274,
+    tInf = 275,
+    tEqu = 276,
+    tNomVar = 277,
+    tValInt = 278,
+    tOpEgal = 279
   };
 #endif
 /* Tokens.  */
@@ -83,9 +86,12 @@ extern int yydebug;
 #define tFI 271
 #define tPrint 272
 #define tEgal 273
-#define tNomVar 274
-#define tValInt 275
-#define tOpEgal 276
+#define tSup 274
+#define tInf 275
+#define tEqu 276
+#define tNomVar 277
+#define tValInt 278
+#define tOpEgal 279
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -98,7 +104,7 @@ union YYSTYPE
             int nb;
         
 
-#line 102 "y.tab.h" /* yacc.c:1909  */
+#line 108 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

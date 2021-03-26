@@ -14,12 +14,12 @@
             int nb;
         }
 
-%token  tMain tIf tPO tPF tAO tAF tInt tConst tVirgule tOpPlus tOpMoins tOpMul tOpDiv tFI tPrint tEgal
+%token  tMain tIf tPO tPF tAO tAF tInt tConst tVirgule tOpPlus tOpMoins tOpMul tOpDiv tFI tPrint tEgal tSup tInf tEqu tIf
 %token  <var> tNomVar
 %token  <nb> tValInt
 
-%type <char *> Operateur
-%type <char**> Operation
+%type <nb> Operation
+%type <nb> Operande
 
 %right  tOpEgal
 %left   tOpPlus tOpMoins
@@ -84,74 +84,68 @@ Instructions    : Instruction Instructions
 Instruction : tNomVar tEgal Operation tFI
             {
                 printf("Instruction d'operation reconnue\n");
-                if($3[0] == '+')
-                {
-                    if ((get_address($3[1]) != -1) && (get_address($3[2]) != -1))                  
-                        fprintf(f,"ADD %d %d %d\n", get_address($1), get_address($3[1]), get_address($3[2]));
-                    else if ((get_address($3[1]) != -1) && (get_address($3[2]) == -1))
-                        fprintf(f,"ADD %d %d %s\n", get_address($1), get_address($3[1]), $3[2]);
-                    else if ((get_address($3[1]) == -1) && (get_address($3[2]) == -1))
-                        fprintf(f,"ADD %d %s %s\n", get_address($1), $3[1], $3[2]);
-                    else if ((get_address($3[1]) == -1) && (get_address($3[2]) != -1))
-                        fprintf(f,"ADD %d %s %d\n", get_address($1), $3[1], get_address($3[2]));
-                }
-                else if(strcmp($3[0], '-') == 0)
-                    fprintf(f,"SOU %d %d %d\n", get_address($1), $3[1], $3[2]);
-                else if(strcmp($3[0], '/') == 0)
-                    fprintf(f,"DIV %d %d %d\n", get_address($1), $3[1], $3[2]);
-                else if(strcmp($3[0], '*') == 0)
-                    fprintf(f,"MUL %d %d %d\n", get_address($1), $3[1], $3[2]);
+                fprintf(f, "COP %d %d\n", get_address($1), $3);
+                flush_temp();
             }
             | tPrint tPO tNomVar tPF tFI
-            {printf("Instruction de print reconnue\n");}
-            ;
+            {
+                fprintf(f, "PRI %d\n", get_address($3));
+            }
+            | tIf tPO Condition tPF tAO Instructions tAF
+            {
+                fprintf(f,"JMF %d %d\n", $3,$7);
+            };
 
-Operations  : Operation Operateur Operations 
-            | Operation;
+Operation   : tPO Operation tPF 
+            {
+                $$ = $2;
+            }
+            | Operation tOpPlus Operation 
+            {
+                int adr = add_temp();
+                fprintf(f, "ADD %d %d %d\n", adr, $1, $3);
+                $$ = adr;
+            }
+            | Operation tOpMoins Operation
+            {
+                int adr = add_temp();
+                fprintf(f, "SOU %d %d %d\n", adr, $1, $3);
+                $$ = adr;
+            }
+            | Operation tOpMul Operation
+            {
+                int adr = add_temp();
+                fprintf(f, "MUL %d %d %d\n", adr, $1, $3);
+                $$ = adr;
+            }
+            | Operation tOpDiv Operation
+            {
+                int adr = add_temp();
+                fprintf(f, "DIV %d %d %d\n", adr, $1, $3);
+                $$ = adr;
+            }
+            | Operande
+            {
+                $$ = $1;
+            };
 
-Operation   : tNomVar Operateur tNomVar
+Operande    : tNomVar 
             {
-                $$ = [$2,$1,$3];
+                $$ = get_address($1);
             }
-                
-            | tNomVar Operateur tValInt
-            {
-                $$ = [$2,$1,$3];
-            }
-            | tValInt Operateur tValInt 
-            {
-                $$ = [$2,$1,$3];
-            }
-            | tValInt Operateur tNomVar
-            {$$ = [$2,$1,$3];}
-            | tNomVar 
-            {$$ = [$1];}
             | tValInt
-            {$$ = [$1];}
-            ;
+            {
+                int adr = add_temp();
+                fprintf( f, "AFC %d %d\n", adr, $1);
+                $$ = adr;
+            };
 
-Operateur   : tOpPlus
+Condition   : Operande tSup Operande
             {
-                printf("Addition reconnue\n");
-                $$ = "+"
-            } 
-            | tOpMoins 
-            {
-                printf("Soustraction reconnue\n");
-                $$ = "-"
-            } 
-            | tOpDiv 
-            {
-                printf("Division reconnue\n");
-                $$ = "/"
-            } 
-            | tOpMul
-            {
-                printf("Multiplication reconnue\n");
-                $$ = "*"
-            }
+                int adr
+            | Operande tInf Operande
+            | Operande tEqu Operande
             ;
-
 %%
 void yyerror(char * str) {
     fprintf(stderr, "Error line %s \n", str);

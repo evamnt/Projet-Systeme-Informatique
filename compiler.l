@@ -4,9 +4,13 @@
 
 %%
 \{ {printf("%s trouvé \n", yytext); return tAO;}
-\} {printf("%s trouvé\n", yytext); return tAF;}
+\}  {
+        printf("%s trouvé\n", yytext); 
+        return tAF;
+    }
 main {printf("fonction main trouvée\n"); return tMain;}
 printf {printf("fonction printf trouvé\n"); return tPrint;}
+if {printf("if trouvé\n"); return tIf;}
 const {printf("déclaration de constante trouvée\n"); return tConst;}
 int {printf("type int trouvé\n"); return tInt;}
 [a-zA-Z][a-zA-Z0-9_]*   {
@@ -15,13 +19,18 @@ int {printf("type int trouvé\n"); return tInt;}
                             printf("yylval vaut : %s\n", yylval.var);
                             return tNomVar;
                         }
+"<" {printf("comparateur inf trouvé \n"); return tInf;}
+">" {printf("comparateur sup trouvé \n"); return tSup;}
+"==" {printf("comparateur equ trouvé \n"); return tEqu;}
 "+" {printf("opérateur + trouvé\n", yytext); return tOpPlus;}
 - {printf("opérateur - trouvé\n", yytext); return tOpMoins;}
 "*" {printf("opérateur * trouvé\n", yytext); return tOpMul;}
 "/" {printf("opérateur / trouvé\n", yytext); return tOpDiv;}
 = {printf("opérateur = trouvé\n"); return tEgal;}
 [ \t,] printf("séparateur %s trouvé\n", yytext); 
-\n printf("fin de ligne trouvée\n");
+\n  {
+        printf("fin de ligne trouvée\n");
+    }
 \; {printf("fin d'instruction trouvée\n"); return tFI;}
 [0-9]+  {
             printf("entier %s trouvé\n", yytext); 

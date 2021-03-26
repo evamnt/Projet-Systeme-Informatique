@@ -1,7 +1,7 @@
 main() {
-    const int a = 2;
-    int b;
-    int c = 64;
-    b = a + 2 + 4;
-    printf(b);
+    int a = 2;
+    int b = 3;
+    int c;
+    c = a * ((b + 4) - 10) / 3;
+    printf(c);
 }

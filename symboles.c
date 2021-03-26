@@ -2,14 +2,17 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define nb_symboles 1000
+#define nb_symboles_variables 500
+#define nb_symboles_temp 500
 
 void initialize_table() {
-    table_symboles = malloc(sizeof(struct symbole *) * nb_symboles);
-    for (int i = 0; i < nb_symboles; i++) {
+    int nb_symboles_total = nb_symboles_variables + nb_symboles_temp;
+    table_symboles = malloc(sizeof(struct symbole *) * nb_symboles_total);
+    for (int i = 0; i < nb_symboles_total; i++) {
         table_symboles[i] = malloc(sizeof(struct symbole));
     }
     next_null = 0;
+    next_temp_null = 500;
     p_actuelle = 0;
 } 
 
@@ -23,12 +26,13 @@ void decrement_depth() {
 
 int add_variable(char * id) {
     if (get_address(id) != -1) {
+        //La variable a déjà été ajoutée à cette profondeur, on ne peut la ré ajouter
         printf("Erreur compilation\n");
         exit(-1);
     }
     else {
         printf("%d\n", next_null);
-        if (next_null < nb_symboles) {
+        if (next_null < nb_symboles_variables) {
             table_symboles[next_null]->id = id;
             table_symboles[next_null]->depth = p_actuelle;
             next_null += 1;
@@ -50,4 +54,18 @@ int get_address(char * id) {
         p_temp -= 1;
     }
     return -1;
+}
+
+int add_temp() {
+    next_temp_null += 1;
+    if (next_temp_null >= 1000) {
+        printf("Erreur compilation\n");
+        exit(-1);
+    }
+    else
+        return next_temp_null - 1;
+}
+
+void flush_temp() {
+    next_temp_null = 500;
 }
