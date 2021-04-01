@@ -31,9 +31,9 @@ void decrement_depth() {
 }
 
 int add_variable(char * id) {
-    if (get_address(id) != -1) {
+    if (var_exists(id, p_actuelle) == 0) {
         //La variable a déjà été ajoutée à cette profondeur, on ne peut la ré ajouter
-        printf("Erreur compilation\n");
+        printf("Erreur compilation : la variable a déjà été ajoutée\n");
         exit(-1);
     }
     else {
@@ -47,6 +47,19 @@ int add_variable(char * id) {
             return 0; //False
         }   
     }
+}
+
+int var_exists(char* id, int depth) {
+    for (int i = (next_null - 1); i >= 0; i--) {
+        if (table_symboles[i]->depth == depth) {
+            if (strcmp(table_symboles[i]->id, id) == 0)
+                return 0;
+            }
+        else {
+            break;
+        }
+    }
+    return 1;
 }
 
 int get_address(char * id) {

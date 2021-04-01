@@ -101,23 +101,23 @@ Instruction : tNomVar tEgal Operation tFI
                 add_instruction("PRI", get_address($3), NULL, NULL, 1);                
                 //fprintf(f, "PRI %d\n", get_address($3));
             }
-            | tIf tPO Condition tPF tAO Instructions tAF
+            | tIf tPO Condition tPF tAO Body tAF
             {
                 add_jmf_instruction(jmf_line, $3, 0);
                 decrement_depth();
             }
-            | tIf tPO Condition tPF tAO Instructions tAF 
+            | tIf tPO Condition tPF tAO Body tAF 
             {
                 add_jmf_instruction(jmf_line, $3, 1);
                 jmp_line = get_instruction_line();
                 decrement_depth();
                 increment_depth();
-            } tElse tAO Instructions tAF
+            } tElse tAO Body tAF
             {
                 add_jmp_instruction(jmp_line);
                 decrement_depth();
             }
-            | tWhile tPO Condition tPF tAO Instructions tAF
+            | tWhile tPO Condition tPF tAO Body tAF
             {
                 add_jmf_instruction(jmf_line, $3, 1);
                 add_instruction("JMP", jmf_line - 1, NULL, NULL, 1);
