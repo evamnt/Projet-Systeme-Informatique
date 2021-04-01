@@ -1324,7 +1324,7 @@ yyreduce:
                 printf("On essaie d'ajouter la constante : %s\n", (yyvsp[-3].var));
                 if (add_variable((yyvsp[-3].var))) {
                     if (get_address((yyvsp[-3].var)) != -1) {  
-                        add_instruction("AFC", get_address((yyvsp[-3].var)), (yyvsp[-1].nb), NULL);
+                        add_instruction("AFC", get_address((yyvsp[-3].var)), (yyvsp[-1].nb), NULL, 2);
                         //fprintf(f,"AFC %d %d\n", get_address($3), $5);
                     }
                     else 
@@ -1343,7 +1343,7 @@ yyreduce:
                 printf("Declaration de variable reconnue\n");
                 printf("On essaie d'ajouter la variable : %s\n", (yyvsp[-1].var));
                 if (add_variable((yyvsp[-1].var))) {
-                    add_instruction("AFC", get_address((yyvsp[-1].var)), NULL, NULL);
+                    add_instruction("AFC", get_address((yyvsp[-1].var)), NULL, NULL, 1);
                     //fprintf(f,"AFC %d \n", get_address($2));
                 }
                 else {
@@ -1359,7 +1359,7 @@ yyreduce:
                 printf("Declaration de variable reconnue\n");
                 printf("On essaie d'ajouter la variable : %s\n", (yyvsp[-3].var));
                 if (add_variable((yyvsp[-3].var))) {
-                    add_instruction("AFC", get_address((yyvsp[-3].var)), (yyvsp[-1].nb), NULL);
+                    add_instruction("AFC", get_address((yyvsp[-3].var)), (yyvsp[-1].nb), NULL, 2);
                     //fprintf(f,"AFC %d %d\n", get_address($2), $4);
                 }
                 else {
@@ -1373,7 +1373,7 @@ yyreduce:
 #line 93 "compiler.y" /* yacc.c:1646  */
     {
                 printf("Instruction d'operation reconnue\n");
-                add_instruction("COP", get_address((yyvsp[-3].var)), (yyvsp[-1].nb), NULL);
+                add_instruction("COP", get_address((yyvsp[-3].var)), (yyvsp[-1].nb), NULL, 2);
                 //fprintf(f, "COP %d %d\n", get_address($1), $3);
                 flush_temp();
             }
@@ -1383,7 +1383,7 @@ yyreduce:
   case 14:
 #line 100 "compiler.y" /* yacc.c:1646  */
     {
-                add_instruction("PRI", get_address((yyvsp[-2].var)), NULL, NULL);                
+                add_instruction("PRI", get_address((yyvsp[-2].var)), NULL, NULL, 1);                
                 //fprintf(f, "PRI %d\n", get_address($3));
             }
 #line 1390 "y.tab.c" /* yacc.c:1646  */
@@ -1392,7 +1392,7 @@ yyreduce:
   case 15:
 #line 105 "compiler.y" /* yacc.c:1646  */
     {
-                add_jmf_instruction(jmf_line, (yyvsp[-4].nb));
+                add_jmf_instruction(jmf_line, (yyvsp[-4].nb), 0);
                 decrement_depth();
             }
 #line 1399 "y.tab.c" /* yacc.c:1646  */
@@ -1401,7 +1401,7 @@ yyreduce:
   case 16:
 #line 110 "compiler.y" /* yacc.c:1646  */
     {
-                add_jmf_instruction(jmf_line, (yyvsp[-4].nb));
+                add_jmf_instruction(jmf_line, (yyvsp[-4].nb), 1);
                 jmp_line = get_instruction_line();
                 decrement_depth();
                 increment_depth();
@@ -1421,8 +1421,8 @@ yyreduce:
   case 18:
 #line 121 "compiler.y" /* yacc.c:1646  */
     {
-                add_jmf_instruction(jmf_line, (yyvsp[-4].nb));
-                add_instruction("JMP", jmf_line, NULL, NULL);
+                add_jmf_instruction(jmf_line, (yyvsp[-4].nb), 1);
+                add_instruction("JMP", jmf_line - 1, NULL, NULL, 1);
                 decrement_depth();
             }
 #line 1429 "y.tab.c" /* yacc.c:1646  */
@@ -1440,7 +1440,7 @@ yyreduce:
 #line 132 "compiler.y" /* yacc.c:1646  */
     {
                 int adr = add_temp();
-                add_instruction("ADD", adr, (yyvsp[-2].nb), (yyvsp[0].nb));
+                add_instruction("ADD", adr, (yyvsp[-2].nb), (yyvsp[0].nb), 3);
                 //fprintf(f, "ADD %d %d %d\n", adr, $1, $3);
                 (yyval.nb) = adr;
             }
@@ -1451,7 +1451,7 @@ yyreduce:
 #line 139 "compiler.y" /* yacc.c:1646  */
     {
                 int adr = add_temp();
-                add_instruction("SOU", adr, (yyvsp[-2].nb), (yyvsp[0].nb));
+                add_instruction("SOU", adr, (yyvsp[-2].nb), (yyvsp[0].nb), 3);
                 //fprintf(f, "SOU %d %d %d\n", adr, $1, $3);
                 (yyval.nb) = adr;
             }
@@ -1462,7 +1462,7 @@ yyreduce:
 #line 146 "compiler.y" /* yacc.c:1646  */
     {
                 int adr = add_temp();
-                add_instruction("MUL", adr, (yyvsp[-2].nb), (yyvsp[0].nb));
+                add_instruction("MUL", adr, (yyvsp[-2].nb), (yyvsp[0].nb), 3);
                 //fprintf(f, "MUL %d %d %d\n", adr, $1, $3);
                 (yyval.nb) = adr;
             }
@@ -1473,7 +1473,7 @@ yyreduce:
 #line 153 "compiler.y" /* yacc.c:1646  */
     {
                 int adr = add_temp();
-                add_instruction("DIV", adr, (yyvsp[-2].nb), (yyvsp[0].nb));
+                add_instruction("DIV", adr, (yyvsp[-2].nb), (yyvsp[0].nb), 3);
                 //fprintf(f, "DIV %d %d %d\n", adr, $1, $3);
                 (yyval.nb) = adr;
             }
@@ -1500,7 +1500,7 @@ yyreduce:
 #line 169 "compiler.y" /* yacc.c:1646  */
     {
                 int adr = add_temp();
-                add_instruction("AFC", adr, (yyvsp[0].nb), NULL);
+                add_instruction("AFC", adr, (yyvsp[0].nb), NULL, 2);
                 //fprintf( f, "AFC %d %d\n", adr, $1);
                 (yyval.nb) = adr;
             }
@@ -1512,7 +1512,7 @@ yyreduce:
     {
                 int adr = add_temp();
                 printf("Operateur 1 = %d\n", adr);
-                add_instruction("SUP", adr, (yyvsp[-2].nb), (yyvsp[0].nb));
+                add_instruction("SUP", adr, (yyvsp[-2].nb), (yyvsp[0].nb), 3);
                 //fprintf(f,"SUP %d %d %d\n", adr, $1,$3);
                 jmf_line = get_instruction_line();
                 (yyval.nb) = adr;
@@ -1525,7 +1525,7 @@ yyreduce:
 #line 187 "compiler.y" /* yacc.c:1646  */
     {
                 int adr = add_temp();
-                add_instruction("INF", adr, (yyvsp[-2].nb), (yyvsp[0].nb));
+                add_instruction("INF", adr, (yyvsp[-2].nb), (yyvsp[0].nb), 3);
                 //fprintf(f,"INF %d %d %d\n", adr, $1, $3);
                 jmf_line = get_instruction_line();
                 (yyval.nb) = adr;
@@ -1538,7 +1538,7 @@ yyreduce:
 #line 196 "compiler.y" /* yacc.c:1646  */
     {
                 int adr = add_temp();
-                add_instruction("EQU", adr, (yyvsp[-2].nb), (yyvsp[0].nb));
+                add_instruction("EQU", adr, (yyvsp[-2].nb), (yyvsp[0].nb), 3);
                 //fprintf(f,"EQU %d %d %d\n", adr, $1,$3);
                 jmf_line = get_instruction_line();
                 (yyval.nb) = adr;

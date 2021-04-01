@@ -13,11 +13,12 @@ void initialize_table_instructions() {
     next_instruction = 0;
 }
 
-void add_instruction(char* operation, int operande1, int operande2, int operande3) {
+void add_instruction(char* operation, int operande1, int operande2, int operande3, int nb_operandes) {
     table_instructions[next_instruction]->operation = operation;
     table_instructions[next_instruction]->operande1 = operande1;
     table_instructions[next_instruction]->operande2 = operande2;
     table_instructions[next_instruction]->operande3 = operande3;
+    table_instructions[next_instruction]->nb_operandes = nb_operandes;
     next_instruction++;
 }
 
@@ -25,9 +26,9 @@ void write_instructions(char* filename) {
     FILE * f;
     f = fopen(filename, "a");
     for (int i = 0; i < next_instruction; i++) {
-        if (table_instructions[i]->operande2 == NULL)
+        if (table_instructions[i]->nb_operandes == 1)
             fprintf(f, "%s %d\n", table_instructions[i]->operation, table_instructions[i]->operande1);
-        else if (table_instructions[i]->operande3 == NULL)
+        else if (table_instructions[i]->nb_operandes == 2)
             fprintf(f, "%s %d %d\n", table_instructions[i]->operation, table_instructions[i]->operande1, table_instructions[i]->operande2);
         else        
             fprintf(f, "%s %d %d %d\n", table_instructions[i]->operation, table_instructions[i]->operande1, table_instructions[i]->operande2, table_instructions[i]->operande3);
@@ -39,13 +40,18 @@ int get_instruction_line() {
     return next_instruction - 1;
 }
 
-void add_jmf_instruction(int instruction_line, int res_cond) {
+void add_jmf_instruction(int instruction_line, int res_cond, int while_or_else) {
     table_instructions[instruction_line]->operation = "JMF";
     table_instructions[instruction_line]->operande1 = res_cond;
-    table_instructions[instruction_line]->operande2 = next_instruction + 1;
+    table_instructions[instruction_line]->nb_operandes = 2;
+    if (while_or_else == 1)
+        table_instructions[instruction_line]->operande2 = next_instruction + 1;
+    else
+        table_instructions[instruction_line]->operande2 = next_instruction;
 }
 
 void add_jmp_instruction(int instruction_line) {
     table_instructions[instruction_line]->operation = "JMP";
-    table_instructions[instruction_line]->operande1 = next_instruction + 1;
+    table_instructions[instruction_line]->operande1 = next_instruction;
+    table_instructions[instruction_line]->nb_operandes = 1;
 }

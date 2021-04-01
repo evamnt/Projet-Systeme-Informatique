@@ -48,7 +48,7 @@ Declaration : tConst tInt tNomVar tEgal tValInt tFI
                 printf("On essaie d'ajouter la constante : %s\n", $3);
                 if (add_variable($3)) {
                     if (get_address($3) != -1) {  
-                        add_instruction("AFC", get_address($3), $5, NULL);
+                        add_instruction("AFC", get_address($3), $5, NULL, 2);
                         //fprintf(f,"AFC %d %d\n", get_address($3), $5);
                     }
                     else 
@@ -63,7 +63,7 @@ Declaration : tConst tInt tNomVar tEgal tValInt tFI
                 printf("Declaration de variable reconnue\n");
                 printf("On essaie d'ajouter la variable : %s\n", $2);
                 if (add_variable($2)) {
-                    add_instruction("AFC", get_address($2), NULL, NULL);
+                    add_instruction("AFC", get_address($2), NULL, NULL, 1);
                     //fprintf(f,"AFC %d \n", get_address($2));
                 }
                 else {
@@ -76,7 +76,7 @@ Declaration : tConst tInt tNomVar tEgal tValInt tFI
                 printf("Declaration de variable reconnue\n");
                 printf("On essaie d'ajouter la variable : %s\n", $2);
                 if (add_variable($2)) {
-                    add_instruction("AFC", get_address($2), $4, NULL);
+                    add_instruction("AFC", get_address($2), $4, NULL, 2);
                     //fprintf(f,"AFC %d %d\n", get_address($2), $4);
                 }
                 else {
@@ -92,23 +92,23 @@ Instructions    : Instruction Instructions
 Instruction : tNomVar tEgal Operation tFI
             {
                 printf("Instruction d'operation reconnue\n");
-                add_instruction("COP", get_address($1), $3, NULL);
+                add_instruction("COP", get_address($1), $3, NULL, 2);
                 //fprintf(f, "COP %d %d\n", get_address($1), $3);
                 flush_temp();
             }
             | tPrint tPO tNomVar tPF tFI
             {
-                add_instruction("PRI", get_address($3), NULL, NULL);                
+                add_instruction("PRI", get_address($3), NULL, NULL, 1);                
                 //fprintf(f, "PRI %d\n", get_address($3));
             }
             | tIf tPO Condition tPF tAO Instructions tAF
             {
-                add_jmf_instruction(jmf_line, $3);
+                add_jmf_instruction(jmf_line, $3, 0);
                 decrement_depth();
             }
             | tIf tPO Condition tPF tAO Instructions tAF 
             {
-                add_jmf_instruction(jmf_line, $3);
+                add_jmf_instruction(jmf_line, $3, 1);
                 jmp_line = get_instruction_line();
                 decrement_depth();
                 increment_depth();
@@ -119,8 +119,8 @@ Instruction : tNomVar tEgal Operation tFI
             }
             | tWhile tPO Condition tPF tAO Instructions tAF
             {
-                add_jmf_instruction(jmf_line, $3);
-                add_instruction("JMP", jmf_line, NULL, NULL);
+                add_jmf_instruction(jmf_line, $3, 1);
+                add_instruction("JMP", jmf_line - 1, NULL, NULL, 1);
                 decrement_depth();
             };
 
@@ -131,28 +131,28 @@ Operation   : tPO Operation tPF
             | Operation tOpPlus Operation 
             {
                 int adr = add_temp();
-                add_instruction("ADD", adr, $1, $3);
+                add_instruction("ADD", adr, $1, $3, 3);
                 //fprintf(f, "ADD %d %d %d\n", adr, $1, $3);
                 $$ = adr;
             }
             | Operation tOpMoins Operation
             {
                 int adr = add_temp();
-                add_instruction("SOU", adr, $1, $3);
+                add_instruction("SOU", adr, $1, $3, 3);
                 //fprintf(f, "SOU %d %d %d\n", adr, $1, $3);
                 $$ = adr;
             }
             | Operation tOpMul Operation
             {
                 int adr = add_temp();
-                add_instruction("MUL", adr, $1, $3);
+                add_instruction("MUL", adr, $1, $3, 3);
                 //fprintf(f, "MUL %d %d %d\n", adr, $1, $3);
                 $$ = adr;
             }
             | Operation tOpDiv Operation
             {
                 int adr = add_temp();
-                add_instruction("DIV", adr, $1, $3);
+                add_instruction("DIV", adr, $1, $3, 3);
                 //fprintf(f, "DIV %d %d %d\n", adr, $1, $3);
                 $$ = adr;
             }
@@ -168,7 +168,7 @@ Operande    : tNomVar
             | tValInt
             {
                 int adr = add_temp();
-                add_instruction("AFC", adr, $1, NULL);
+                add_instruction("AFC", adr, $1, NULL, 2);
                 //fprintf( f, "AFC %d %d\n", adr, $1);
                 $$ = adr;
             };
@@ -177,7 +177,7 @@ Condition   : Operande tSup Operande
             {
                 int adr = add_temp();
                 printf("Operateur 1 = %d\n", adr);
-                add_instruction("SUP", adr, $1, $3);
+                add_instruction("SUP", adr, $1, $3, 3);
                 //fprintf(f,"SUP %d %d %d\n", adr, $1,$3);
                 jmf_line = get_instruction_line();
                 $$ = adr;
@@ -186,7 +186,7 @@ Condition   : Operande tSup Operande
             | Operande tInf Operande
             {
                 int adr = add_temp();
-                add_instruction("INF", adr, $1, $3);
+                add_instruction("INF", adr, $1, $3, 3);
                 //fprintf(f,"INF %d %d %d\n", adr, $1, $3);
                 jmf_line = get_instruction_line();
                 $$ = adr;
@@ -195,7 +195,7 @@ Condition   : Operande tSup Operande
             | Operande tEqu Operande
             {
                 int adr = add_temp();
-                add_instruction("EQU", adr, $1, $3);
+                add_instruction("EQU", adr, $1, $3, 3);
                 //fprintf(f,"EQU %d %d %d\n", adr, $1,$3);
                 jmf_line = get_instruction_line();
                 $$ = adr;
