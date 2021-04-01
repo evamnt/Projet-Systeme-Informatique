@@ -1,8 +1,10 @@
 main() {
-    int a = 2;
     int b = 5;
-    if (a > 3) {
-        printf(a);
+    if (b > 2) {
+        b = b - 2;
+    }
+    else {
+        b = b * 2;
     }
     printf(b);
 }

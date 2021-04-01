@@ -3,11 +3,13 @@
     #include <stdlib.h>
     #include <string.h>
     #include "symboles.h"
+    #include "table_instructions.h"
+
+    int jmf_line;
+    int jmp_line;
+
     int yylex();
     void yyerror(char *);
-    FILE * f;
-    int line_number = 0;
-  
 %}
 
 %union  {
@@ -15,7 +17,7 @@
             int nb;
         }
 
-%token  tMain tIf tPO tPF tAO tAF tInt tConst tVirgule tOpPlus tOpMoins tOpMul tOpDiv tFI tPrint tEgal tSup tInf tEqu
+%token  tMain tIf tElse tWhile tPO tPF tAO tAF tInt tConst tVirgule tOpPlus tOpMoins tOpMul tOpDiv tFI tPrint tEgal tSup tInf tEqu
 %token  <var> tNomVar
 %token  <nb> tValInt
 
@@ -45,9 +47,9 @@ Declaration : tConst tInt tNomVar tEgal tValInt tFI
                 printf("Declaration de constante reconnue\n");
                 printf("On essaie d'ajouter la constante : %s\n", $3);
                 if (add_variable($3)) {
-                    if (get_address($3) != -1) {                   
-                        fprintf(f,"AFC %d %d\n", get_address($3), $5);
-                        line_number += 1;
+                    if (get_address($3) != -1) {  
+                        add_instruction("AFC", get_address($3), $5, NULL);
+                        //fprintf(f,"AFC %d %d\n", get_address($3), $5);
                     }
                     else 
                         printf("Erreur lors de la récupération de l'adresse de %s\n", $3);
@@ -61,8 +63,8 @@ Declaration : tConst tInt tNomVar tEgal tValInt tFI
                 printf("Declaration de variable reconnue\n");
                 printf("On essaie d'ajouter la variable : %s\n", $2);
                 if (add_variable($2)) {
-                    fprintf(f,"AFC %d \n", get_address($2));
-                    line_number += 1;
+                    add_instruction("AFC", get_address($2), NULL, NULL);
+                    //fprintf(f,"AFC %d \n", get_address($2));
                 }
                 else {
                     printf("Erreur lors de l'ajout de %s\n", $2);
@@ -74,8 +76,8 @@ Declaration : tConst tInt tNomVar tEgal tValInt tFI
                 printf("Declaration de variable reconnue\n");
                 printf("On essaie d'ajouter la variable : %s\n", $2);
                 if (add_variable($2)) {
-                    fprintf(f,"AFC %d %d\n", get_address($2), $4);
-                    line_number += 1;
+                    add_instruction("AFC", get_address($2), $4, NULL);
+                    //fprintf(f,"AFC %d %d\n", get_address($2), $4);
                 }
                 else {
                     printf("Erreur lors de l'ajout de %s\n", $2);
@@ -90,18 +92,36 @@ Instructions    : Instruction Instructions
 Instruction : tNomVar tEgal Operation tFI
             {
                 printf("Instruction d'operation reconnue\n");
-                fprintf(f, "COP %d %d\n", get_address($1), $3);
+                add_instruction("COP", get_address($1), $3, NULL);
+                //fprintf(f, "COP %d %d\n", get_address($1), $3);
                 flush_temp();
-                line_number += 1;
             }
             | tPrint tPO tNomVar tPF tFI
             {
-                fprintf(f, "PRI %d\n", get_address($3));
-                line_number += 1;
+                add_instruction("PRI", get_address($3), NULL, NULL);                
+                //fprintf(f, "PRI %d\n", get_address($3));
             }
             | tIf tPO Condition tPF tAO Instructions tAF
             {
-                
+                add_jmf_instruction(jmf_line, $3);
+                decrement_depth();
+            }
+            | tIf tPO Condition tPF tAO Instructions tAF 
+            {
+                add_jmf_instruction(jmf_line, $3);
+                jmp_line = get_instruction_line();
+                decrement_depth();
+                increment_depth();
+            } tElse tAO Instructions tAF
+            {
+                add_jmp_instruction(jmp_line);
+                decrement_depth();
+            }
+            | tWhile tPO Condition tPF tAO Instructions tAF
+            {
+                add_jmf_instruction(jmf_line, $3);
+                add_instruction("JMP", jmf_line, NULL, NULL);
+                decrement_depth();
             };
 
 Operation   : tPO Operation tPF 
@@ -111,28 +131,29 @@ Operation   : tPO Operation tPF
             | Operation tOpPlus Operation 
             {
                 int adr = add_temp();
-                fprintf(f, "ADD %d %d %d\n", adr, $1, $3);
-                line_number += 1;
+                add_instruction("ADD", adr, $1, $3);
+                //fprintf(f, "ADD %d %d %d\n", adr, $1, $3);
                 $$ = adr;
             }
             | Operation tOpMoins Operation
             {
                 int adr = add_temp();
-                fprintf(f, "SOU %d %d %d\n", adr, $1, $3);
-                line_number += 1;
+                add_instruction("SOU", adr, $1, $3);
+                //fprintf(f, "SOU %d %d %d\n", adr, $1, $3);
                 $$ = adr;
             }
             | Operation tOpMul Operation
             {
                 int adr = add_temp();
-                fprintf(f, "MUL %d %d %d\n", adr, $1, $3);
+                add_instruction("MUL", adr, $1, $3);
+                //fprintf(f, "MUL %d %d %d\n", adr, $1, $3);
                 $$ = adr;
             }
             | Operation tOpDiv Operation
             {
                 int adr = add_temp();
-                fprintf(f, "DIV %d %d %d\n", adr, $1, $3);
-                line_number += 1;
+                add_instruction("DIV", adr, $1, $3);
+                //fprintf(f, "DIV %d %d %d\n", adr, $1, $3);
                 $$ = adr;
             }
             | Operande
@@ -147,33 +168,38 @@ Operande    : tNomVar
             | tValInt
             {
                 int adr = add_temp();
-                fprintf( f, "AFC %d %d\n", adr, $1);
-                line_number += 1;
+                add_instruction("AFC", adr, $1, NULL);
+                //fprintf( f, "AFC %d %d\n", adr, $1);
                 $$ = adr;
             };
 
 Condition   : Operande tSup Operande
             {
                 int adr = add_temp();
-                fprintf(f,"SUP %d %d %d\n", adr, $1,$3);
-                line_number += 1;
-                fprintf(f,"JMF %d %d\n", adr ,line_number + 1);
-                line_number += 1;
+                printf("Operateur 1 = %d\n", adr);
+                add_instruction("SUP", adr, $1, $3);
+                //fprintf(f,"SUP %d %d %d\n", adr, $1,$3);
+                jmf_line = get_instruction_line();
                 $$ = adr;
+                increment_depth();
             }
             | Operande tInf Operande
             {
                 int adr = add_temp();
-                fprintf(f,"INF %d %d %d\n", adr, $1,$3);
-                line_number += 1;
+                add_instruction("INF", adr, $1, $3);
+                //fprintf(f,"INF %d %d %d\n", adr, $1, $3);
+                jmf_line = get_instruction_line();
                 $$ = adr;
+                increment_depth();
             }
             | Operande tEqu Operande
             {
                 int adr = add_temp();
-                fprintf(f,"EQU %d %d %d\n", adr, $1,$3);
-                line_number += 1;
+                add_instruction("EQU", adr, $1, $3);
+                //fprintf(f,"EQU %d %d %d\n", adr, $1,$3);
+                jmf_line = get_instruction_line();
                 $$ = adr;
+                increment_depth();
             }
             ;
 %%
@@ -183,7 +209,8 @@ void yyerror(char * str) {
 
 int main(){
     initialize_table();
-    f = fopen("output.asm", "a");
+    initialize_table_instructions();
     yyparse();
+    write_instructions("output.asm");
     return 0;
 }

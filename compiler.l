@@ -11,6 +11,8 @@
 main {printf("fonction main trouvée\n"); return tMain;}
 printf {printf("fonction printf trouvé\n"); return tPrint;}
 if {printf("if trouvé\n"); return tIf;}
+else {printf("else trouvé\n"); return tElse;}
+while {printf("while trouvé\n"); return tWhile;}
 const {printf("déclaration de constante trouvée\n"); return tConst;}
 int {printf("type int trouvé\n"); return tInt;}
 [a-zA-Z][a-zA-Z0-9_]*   {

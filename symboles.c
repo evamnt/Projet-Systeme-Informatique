@@ -21,6 +21,12 @@ void increment_depth() {
 }
 
 void decrement_depth() {
+    for (int i = 0; i < next_null; i++) {
+        if (table_symboles[i]->depth == p_actuelle) {
+            next_null = i;
+            break;
+        }
+    }
     p_actuelle -= 1;
 }
 

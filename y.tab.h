@@ -47,64 +47,68 @@ extern int yydebug;
   {
     tMain = 258,
     tIf = 259,
-    tPO = 260,
-    tPF = 261,
-    tAO = 262,
-    tAF = 263,
-    tInt = 264,
-    tConst = 265,
-    tVirgule = 266,
-    tOpPlus = 267,
-    tOpMoins = 268,
-    tOpMul = 269,
-    tOpDiv = 270,
-    tFI = 271,
-    tPrint = 272,
-    tEgal = 273,
-    tSup = 274,
-    tInf = 275,
-    tEqu = 276,
-    tNomVar = 277,
-    tValInt = 278,
-    tOpEgal = 279
+    tElse = 260,
+    tWhile = 261,
+    tPO = 262,
+    tPF = 263,
+    tAO = 264,
+    tAF = 265,
+    tInt = 266,
+    tConst = 267,
+    tVirgule = 268,
+    tOpPlus = 269,
+    tOpMoins = 270,
+    tOpMul = 271,
+    tOpDiv = 272,
+    tFI = 273,
+    tPrint = 274,
+    tEgal = 275,
+    tSup = 276,
+    tInf = 277,
+    tEqu = 278,
+    tNomVar = 279,
+    tValInt = 280,
+    tOpEgal = 281
   };
 #endif
 /* Tokens.  */
 #define tMain 258
 #define tIf 259
-#define tPO 260
-#define tPF 261
-#define tAO 262
-#define tAF 263
-#define tInt 264
-#define tConst 265
-#define tVirgule 266
-#define tOpPlus 267
-#define tOpMoins 268
-#define tOpMul 269
-#define tOpDiv 270
-#define tFI 271
-#define tPrint 272
-#define tEgal 273
-#define tSup 274
-#define tInf 275
-#define tEqu 276
-#define tNomVar 277
-#define tValInt 278
-#define tOpEgal 279
+#define tElse 260
+#define tWhile 261
+#define tPO 262
+#define tPF 263
+#define tAO 264
+#define tAF 265
+#define tInt 266
+#define tConst 267
+#define tVirgule 268
+#define tOpPlus 269
+#define tOpMoins 270
+#define tOpMul 271
+#define tOpDiv 272
+#define tFI 273
+#define tPrint 274
+#define tEgal 275
+#define tSup 276
+#define tInf 277
+#define tEqu 278
+#define tNomVar 279
+#define tValInt 280
+#define tOpEgal 281
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 13 "compiler.y" /* yacc.c:1909  */
+#line 15 "compiler.y" /* yacc.c:1909  */
 
             char* var;
             int nb;
         
 
-#line 108 "y.tab.h" /* yacc.c:1909  */
+#line 112 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
