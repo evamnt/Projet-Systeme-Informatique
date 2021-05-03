@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.ncd
+OUTFILE=/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.bit
+FAMILY=Spartan6
+PART=xc6slx16-3csg324
+WORKINGDIR=/home/moenne-l/4IR/TD_ArchiMat/Compteur
+LICENSE=WebPack
+USER_INFO=176114439_0_0_839

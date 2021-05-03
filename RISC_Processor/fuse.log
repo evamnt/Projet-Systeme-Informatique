@@ -1,0 +1,25 @@
+Running: /usr/local/insa/Xilinx.ISE/13.4/ISE_DS/ISE/bin/lin64/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /home/minot/4IR/Projet-Systeme-Informatique/RISC_Processor/test_banc_memoire_isim_beh.exe -prj /home/minot/4IR/Projet-Systeme-Informatique/RISC_Processor/test_banc_memoire_beh.prj work.test_banc_memoire 
+ISim O.87xd (signature 0x8ddf5b5d)
+Number of CPUs detected in this system: 12
+Turning on mult-threading, number of parallel sub-compilation jobs: 24 
+Determining compilation order of HDL files
+Parsing VHDL file "/home/minot/4IR/Projet-Systeme-Informatique/RISC_Processor/Banc_Memoire.vhd" into library work
+Parsing VHDL file "/home/minot/4IR/Projet-Systeme-Informatique/RISC_Processor/test_banc_memoire.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Fuse Memory Usage: 98504 KB
+Fuse CPU Usage: 680 ms
+Compiling package standard
+Compiling package std_logic_1164
+Compiling package std_logic_arith
+Compiling package std_logic_unsigned
+Compiling package numeric_std
+Compiling architecture behavioral of entity Banc_Memoire [banc_memoire_default]
+Compiling architecture behavior of entity test_banc_memoire
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 8 VHDL Units
+Built simulation executable /home/minot/4IR/Projet-Systeme-Informatique/RISC_Processor/test_banc_memoire_isim_beh.exe
+Fuse Memory Usage: 1722960 KB
+Fuse CPU Usage: 780 ms
+GCC CPU Usage: 150 ms

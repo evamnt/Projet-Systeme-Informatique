@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "secureip" -o "/home/minot/4IR/Projet-Systeme-Informatique/RISC_Processor/test_banc_memoire_isim_beh.exe" -prj "/home/minot/4IR/Projet-Systeme-Informatique/RISC_Processor/test_banc_memoire_beh.prj" "work.test_banc_memoire" 

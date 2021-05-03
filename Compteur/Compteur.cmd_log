@@ -1,0 +1,30 @@
+xst -intstyle ise -ifn "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.xst" -ofn "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-3 Compteur.ngc Compteur.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o Compteur_map.ncd Compteur.ngd Compteur.pcf 
+par -w -intstyle ise -ol high -mt off Compteur_map.ncd Compteur.ncd Compteur.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml Compteur.twx Compteur.ncd -o Compteur.twr Compteur.pcf 
+xst -intstyle ise -ifn "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.xst" -ofn "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -i -p xc6slx16-csg324-3 Compteur.ngc Compteur.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o Compteur_map.ncd Compteur.ngd Compteur.pcf 
+par -w -intstyle ise -ol high -mt off Compteur_map.ncd Compteur.ncd Compteur.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml Compteur.twx Compteur.ncd -o Compteur.twr Compteur.pcf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc Compteur.ucf -p xc6slx16-csg324-3 Compteur.ngc Compteur.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o Compteur_map.ncd Compteur.ngd Compteur.pcf 
+par -w -intstyle ise -ol high -mt off Compteur_map.ncd Compteur.ncd Compteur.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml Compteur.twx Compteur.ncd -o Compteur.twr Compteur.pcf -ucf Compteur.ucf 
+netgen -intstyle ise -s 3  -pcf Compteur.pcf -rpw 100 -tpw 0 -ar Structure -tm Compteur -insert_pp_buffers true -w -dir netgen/par -ofmt vhdl -sim Compteur.ncd Compteur_timesim.vhd 
+xst -intstyle ise -ifn "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.xst" -ofn "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.syr" 
+xst -intstyle ise -ifn "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.xst" -ofn "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc Compteur.ucf -p xc6slx16-csg324-3 Compteur.ngc Compteur.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o Compteur_map.ncd Compteur.ngd Compteur.pcf 
+par -w -intstyle ise -ol high -mt off Compteur_map.ncd Compteur.ncd Compteur.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml Compteur.twx Compteur.ncd -o Compteur.twr Compteur.pcf -ucf Compteur.ucf 
+netgen -intstyle ise -s 3  -pcf Compteur.pcf -rpw 100 -tpw 0 -ar Structure -tm Compteur -insert_pp_buffers true -w -dir netgen/par -ofmt vhdl -sim Compteur.ncd Compteur_timesim.vhd 
+netgen -intstyle ise -s 3  -pcf Compteur.pcf -rpw 100 -tpw 0 -ar Structure -tm Compteur -insert_pp_buffers true -w -dir netgen/par -ofmt vhdl -sim Compteur.ncd Compteur_timesim.vhd 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc Compteur.ucf -p xc6slx16-csg324-3 Compteur.ngc Compteur.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o Compteur_map.ncd Compteur.ngd Compteur.pcf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc Compteur.ucf -p xc6slx16-csg324-3 Compteur.ngc Compteur.ngd  
+map -intstyle ise -p xc6slx16-csg324-3 -w -logic_opt off -ol high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off -pr off -lc off -power off -o Compteur_map.ncd Compteur.ngd Compteur.pcf 
+par -w -intstyle ise -ol high -mt off Compteur_map.ncd Compteur.ncd Compteur.pcf 
+trce -intstyle ise -v 3 -s 3 -n 3 -fastpaths -xml Compteur.twx Compteur.ncd -o Compteur.twr Compteur.pcf -ucf Compteur.ucf 
+bitgen -intstyle ise -f Compteur.ut Compteur.ncd 

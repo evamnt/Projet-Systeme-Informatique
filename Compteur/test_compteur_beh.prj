@@ -1,0 +1,2 @@
+vhdl work "Compteur.vhd"
+vhdl work "test_compteur.vhd"

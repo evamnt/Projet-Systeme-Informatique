@@ -1,0 +1,36 @@
+Running: /usr/local/insa/Xilinx.ISE/13.4/ISE_DS/ISE/bin/lin64/unwrapped/fuse -intstyle ise -incremental -lib secureip -o /home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur_isim_par.exe -prj /home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur_par.prj work.Compteur 
+ISim O.87xd (signature 0x8ddf5b5d)
+Number of CPUs detected in this system: 12
+Turning on mult-threading, number of parallel sub-compilation jobs: 24 
+Determining compilation order of HDL files
+Parsing VHDL file "/home/moenne-l/4IR/TD_ArchiMat/Compteur/netgen/par/Compteur_timesim.vhd" into library work
+Starting static elaboration
+Completed static elaboration
+Fuse Memory Usage: 139436 KB
+Fuse CPU Usage: 890 ms
+Compiling package standard
+Compiling package std_logic_1164
+Compiling package textio
+Compiling package vital_timing
+Compiling package vcomponents
+Compiling package vital_primitives
+Compiling package vpackage
+Compiling architecture x_ckbuf_v of entity X_CKBUF [\X_CKBUF(true,true,"UNPLACED",(0...]
+Compiling architecture x_sff_v of entity X_SFF [\X_SFF(true,true,true,"UNPLACED"...]
+Compiling architecture x_lut6_v of entity X_LUT6 [\X_LUT6(true,true,"UNPLACED",(0,...]
+Compiling architecture x_lut5_v of entity X_LUT5 [\X_LUT5(true,true,"UNPLACED",(0,...]
+Compiling architecture x_carry4_v of entity X_CARRY4 [\X_CARRY4(true,"*",true,true,"UN...]
+Compiling architecture x_obuf_v of entity X_OBUF [\X_OBUF(true,true,"DONT_CARE",12...]
+Compiling architecture x_buf_v of entity X_BUF [\X_BUF(true,true,"UNPLACED",(0,0...]
+Compiling architecture x_inv_v of entity X_INV [\X_INV(true,true,"PAD170",(0,0),...]
+Compiling architecture x_zero_v of entity X_ZERO [\X_ZERO("UNPLACED")(1,8)\]
+Compiling architecture x_roc_v of entity X_ROC [\X_ROC("UNPLACED",100000,"*")(1,...]
+Compiling architecture x_toc_v of entity X_TOC [\X_TOC("UNPLACED",0,"*")(1,8,1,1...]
+Compiling architecture structure of entity compteur
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 100 VHDL Units
+Built simulation executable /home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur_isim_par.exe
+Fuse Memory Usage: 1768600 KB
+Fuse CPU Usage: 1120 ms
+GCC CPU Usage: 980 ms

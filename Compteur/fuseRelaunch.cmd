@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "secureip" -o "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur_isim_par.exe" -prj "/home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur_par.prj" "work.Compteur" 

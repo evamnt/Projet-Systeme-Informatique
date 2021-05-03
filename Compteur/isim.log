@@ -1,0 +1,15 @@
+ISim log file
+Running: /home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur_isim_par.exe -intstyle ise -gui -sdfmax /Compteur/=netgen/par/Compteur_timesim.sdf -sdfroot / -tclbatch isim.cmd -wdb /home/moenne-l/4IR/TD_ArchiMat/Compteur/Compteur_isim_par.wdb 
+ISim O.87xd (signature 0x8ddf5b5d)
+WARNING: A WEBPACK license was found.
+WARNING: Please use Xilinx License Configuration Manager to check out a full ISim license.
+WARNING: ISim will run in Lite mode. Please refer to the ISim documentation for more information on the differences between the Lite and the Full version.
+This is a Lite version of ISim.
+INFO: SDF backannotation was successful with SDF file netgen/par/Compteur_timesim.sdf, for root module /Compteur/.
+Time resolution is 1 ps
+# onerror resume
+# wave add /
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# exit 0

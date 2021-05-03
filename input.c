@@ -7,6 +7,9 @@ main() {
     }
     else {
         int a = 26;
+        while (a == 26) {
+            printf(a);
+        }
         a = a + b;
     }
     printf(b);

@@ -1,0 +1,92 @@
+#-----------------------------------------------------------
+# PlanAhead v13.4 (64-bit)
+# Build 157570 by hdbuild on Fri Dec 16 12:49:33 MST 2011
+# Start of session at: Wed Apr 14 08:19:11 2021
+# Process ID: 4631
+# Log file: /home/moenne-l/4IR/TD_ArchiMat/Compteur/planAhead_run_2/planAhead.log
+# Journal file: /home/moenne-l/4IR/TD_ArchiMat/Compteur/planAhead_run_2/planAhead.jou
+#-----------------------------------------------------------
+start_gui
+source /home/moenne-l/4IR/TD_ArchiMat/Compteur/pa.fromNetlist.tcl
+startgroup
+set_property IOSTANDARD {} [get_ports [list CK]]
+endgroup
+set_property loc "" [get_ports [list  EN]]
+startgroup
+set_property loc PAD154 [get_ports {Din[0]}]
+endgroup
+startgroup
+set_property loc PAD159 [get_ports {Din[1]}]
+endgroup
+startgroup
+set_property loc PAD158 [get_ports {Din[2]}]
+endgroup
+startgroup
+set_property loc PAD174 [get_ports {Din[3]}]
+endgroup
+startgroup
+set_property loc PAD171 [get_ports {Din[4]}]
+endgroup
+startgroup
+set_property loc PAD160 [get_ports {Din[2]}]
+endgroup
+startgroup
+set_property loc PAD161 [get_ports {Din[3]}]
+endgroup
+startgroup
+set_property loc PAD162 [get_ports {Din[4]}]
+endgroup
+startgroup
+set_property loc PAD163 [get_ports {Din[5]}]
+endgroup
+startgroup
+set_property loc PAD164 [get_ports {Din[6]}]
+endgroup
+startgroup
+set_property loc PAD178 [get_ports {Din[7]}]
+endgroup
+startgroup
+set_property loc PAD178 [get_ports {Din[7]}]
+endgroup
+startgroup
+set_property loc PAD125 [get_ports {Dout[0]}]
+endgroup
+startgroup
+set_property loc PAD126 [get_ports {Dout[1]}]
+endgroup
+startgroup
+set_property loc PAD129 [get_ports {Dout[2]}]
+endgroup
+startgroup
+set_property loc PAD130 [get_ports {Dout[3]}]
+endgroup
+startgroup
+set_property loc PAD139 [get_ports {Dout[4]}]
+endgroup
+startgroup
+set_property loc PAD140 [get_ports {Dout[5]}]
+endgroup
+startgroup
+set_property loc PAD141 [get_ports {Dout[6]}]
+endgroup
+startgroup
+set_property loc PAD142 [get_ports {Dout[7]}]
+endgroup
+startgroup
+set_property loc PAD2 [get_ports CK]
+endgroup
+startgroup
+set_property loc PAD28 [get_ports EN]
+endgroup
+startgroup
+set_property loc PAD27 [get_ports LOAD]
+endgroup
+startgroup
+set_property loc PAD30 [get_ports RST]
+endgroup
+startgroup
+set_property loc PAD29 [get_ports SENS]
+endgroup
+save_design
+exit
+stop_gui

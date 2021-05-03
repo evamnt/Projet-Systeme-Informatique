@@ -1,0 +1,8 @@
+INTSTYLE=impact
+INFILE=/home/moenne-l/4IR/TD_ArchiMat/Compteur/impact.xsl
+OUTFILE=/home/moenne-l/4IR/TD_ArchiMat/Compteur/impact.xsl
+FAMILY=Single
+PART=Single
+WORKINGDIR=/home/moenne-l/4IR/TD_ArchiMat/Compteur
+LICENSE=iMPACT
+USER_INFO=iMPACT

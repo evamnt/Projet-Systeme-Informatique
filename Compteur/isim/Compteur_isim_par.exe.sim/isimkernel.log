@@ -1,0 +1,31 @@
+Command line:
+   Compteur_isim_par.exe
+     -simmode  gui
+     -sdfmax  /Compteur/=netgen/par/Compteur_timesim.sdf
+     -sdfroot  /
+     -simrunnum  0
+     -socket  48349
+
+Wed Apr 14 08:07:32 2021
+
+
+ Elaboration Time: 0.01 sec
+
+ Current Memory Usage: 185.025 Meg
+
+ Total Signals          : 823
+ Total Nets             : 584
+ Total Signal Drivers   : 466
+ Total Blocks           : 194
+ Total Primitive Blocks : 111
+ Total Processes        : 464
+ Total Traceable Variables  : 1144
+ Total Scalar Nets and Variables : 9209
+Total Line Count : 1435
+
+ Total Simulation Time: 0.13 sec
+
+ Current Memory Usage: 260.604 Meg
+
+Wed Apr 14 08:08:09 2021
+
